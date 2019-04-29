@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BAMCIS.AWSS3FastCopy.Model
+namespace BAMCIS.AWSS3Extensions.Model
 {
     public class BatchCopyResponse
     {

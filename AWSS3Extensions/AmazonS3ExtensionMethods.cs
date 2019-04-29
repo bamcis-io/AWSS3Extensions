@@ -1,10 +1,8 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using BAMCIS.AWSS3FastCopy.Model;
+using BAMCIS.AWSS3Extensions.Model;
 using BAMCIS.ExponentialBackoffAndRetry;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,7 +11,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BAMCIS.AWSS3FastCopy
+namespace BAMCIS.AWSS3Extensions
 {
     /// <summary>
     /// Extension methods for use with the AWS S3 SDK.

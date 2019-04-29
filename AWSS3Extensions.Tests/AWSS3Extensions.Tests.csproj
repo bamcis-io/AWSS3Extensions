@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AWSS3FastCopy\AWSS3Extensions.csproj" />
+    <ProjectReference Include="..\AWSS3Extensions\AWSS3Extensions.csproj" />
   </ItemGroup>
 
 </Project>

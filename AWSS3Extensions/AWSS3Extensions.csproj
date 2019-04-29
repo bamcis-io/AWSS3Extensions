@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <RootNamespace>BAMCIS.AWSS3FastCopy</RootNamespace>
+    <TargetFrameworks>netstandard1.6;netstandard2.0;net45</TargetFrameworks>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.6' ">1.6.0</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net45' ">2.0.0</NetStandardImplicitPackageVersion>
+    <RootNamespace>BAMCIS.AWSS3Extensions</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Authors>Michael Haken</Authors>
@@ -10,7 +12,7 @@
     <PackageProjectUrl>https://github.com/bamcis-io/AWSS3Extensions</PackageProjectUrl>
     <PackageLicenseExpression></PackageLicenseExpression>
     <RepositoryUrl>https://github.com/bamcis-io/AWSS3Extensions</RepositoryUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/bamcis-io/AWSS3FastCopy/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/bamcis-io/AWSS3Extensions/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>AWS S3</PackageTags>
     <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
@@ -23,12 +25,6 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.3.101.7" />
     <PackageReference Include="ExponentialBackoffAndRetry" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\newtonsoft.json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

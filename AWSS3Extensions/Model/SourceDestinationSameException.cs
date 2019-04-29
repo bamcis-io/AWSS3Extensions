@@ -2,7 +2,7 @@
 using Amazon.S3.Model;
 using System.Collections.Generic;
 
-namespace BAMCIS.AWSS3FastCopy.Model
+namespace BAMCIS.AWSS3Extensions.Model
 {
     /// <summary>
     /// Represents an exception with the source bucket and key are the same

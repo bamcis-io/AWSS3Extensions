@@ -1,7 +1,7 @@
 ﻿using Amazon.S3.Model;
 using System;
 
-namespace BAMCIS.AWSS3FastCopy.Model
+namespace BAMCIS.AWSS3Extensions.Model
 {
     /// <summary>
     /// Represents a failed copy or move request

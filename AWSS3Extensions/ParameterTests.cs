@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BAMCIS.AWSS3FastCopy
+namespace BAMCIS.AWSS3Extensions
 {
     /// <summary>
     /// Convenience methods for common checks on function input parameters

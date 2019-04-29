@@ -4,9 +4,8 @@ using Amazon.Runtime.CredentialManagement;
 using Amazon.S3;
 using Amazon.S3.Model;
 using BAMCIS.AWSLambda.Common;
-using BAMCIS.AWSS3FastCopy.Model;
+using BAMCIS.AWSS3Extensions.Model;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +15,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace BAMCIS.AWSS3FastCopy.Tests
+namespace BAMCIS.AWSS3Extensions.Tests
 {
     public class AmazonS3ExtensionMethodsTests
     {
