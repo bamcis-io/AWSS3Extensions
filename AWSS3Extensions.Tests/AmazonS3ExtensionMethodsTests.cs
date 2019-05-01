@@ -126,7 +126,7 @@ namespace BAMCIS.AWSS3Extensions.Tests
         }
 
         [Fact]
-        public async Task BatchMoveItems()
+        public async Task BulkMoveItems()
         {
             // ARRANGE
             string bucket = sourceBucket;
@@ -157,7 +157,7 @@ namespace BAMCIS.AWSS3Extensions.Tests
                 IEnumerable<S3Object> objects = (await client.ListAllObjectsAsync(list)).SelectMany(x => x.S3Objects);
 
                 // ACT
-                BatchMoveRequest request = new BatchMoveRequest(objects.Select(x => new CopyObjectRequest()
+                BulkMoveRequest request = new BulkMoveRequest(objects.Select(x => new CopyObjectRequest()
                 {
                     SourceBucket = x.BucketName,
                     DestinationBucket = x.BucketName,
@@ -170,14 +170,14 @@ namespace BAMCIS.AWSS3Extensions.Tests
                 };
 
 
-                BatchCopyResponse response = await client.BatchMoveAsync(request);
+                BulkCopyResponse response = await client.BulkMoveAsync(request);
 
                 sw.Stop();
 
                 File.WriteAllText("results.txt", $"Successfully moved {count} items in {sw.Elapsed}.");
 
                 // ASSERT
-                Assert.Equal(objects.Count(), response.SuccessfulResponses.Count);
+                Assert.Equal(objects.Count(), response.SuccessfulOperations.Count);
             }
             catch (Exception e)
             {

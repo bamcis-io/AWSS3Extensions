@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 namespace BAMCIS.AWSS3Extensions.Model
 {
-    public class BatchCopyRequest
+    /// <summary>
+    /// A request to bulk copy 1 or more S3 objects from one location to another
+    /// </summary>
+    public class BulkCopyRequest
     {
         #region Public Properties
 
@@ -25,7 +28,10 @@ namespace BAMCIS.AWSS3Extensions.Model
         public bool PreferMultipart { get; set; }
        
         /// <summary>
-        /// The maximum number of concurrent copy operations
+        /// The maximum number of concurrent copy operations, the list of CopyObjectRequest
+        /// items will be chunked into this number and executed as async copy or move
+        /// tasks. Use caution when increasing this number and ensure operations do not
+        /// get canceled due to being queued for too long.
         /// </summary>
         public int MaxConcurrency { get; set; }
 
@@ -48,11 +54,11 @@ namespace BAMCIS.AWSS3Extensions.Model
         /// </summary>
         /// <param name="requests"></param>
         /// <param name="useMultipart"></param>
-        public BatchCopyRequest(IEnumerable<CopyObjectRequest> requests)
+        public BulkCopyRequest(IEnumerable<CopyObjectRequest> requests)
         {
             this.Requests = requests ?? throw new ArgumentNullException("requests");
             this.PartSize = Constants.FIVE_MEBIBYTE;
-            this.MaxConcurrency = -1;
+            this.MaxConcurrency = 100;
             this.PreferMultipart = false;
         }
 

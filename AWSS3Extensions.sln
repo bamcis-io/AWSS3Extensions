@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWSS3Extensions", "AWSS3Extensions\AWSS3Extensions.csproj", "{9B8EC3D3-AD85-43CB-9D9C-0F1940F01B75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSS3Extensions.Tests", "AWSS3Extensions.Tests\AWSS3Extensions.Tests.csproj", "{C4997678-30EE-4B35-A833-AFBB5950D0D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AWSS3Extensions.Tests", "AWSS3Extensions.Tests\AWSS3Extensions.Tests.csproj", "{C4997678-30EE-4B35-A833-AFBB5950D0D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0482F3A1-2F53-4C2B-8E25-DBCC5604D59A}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

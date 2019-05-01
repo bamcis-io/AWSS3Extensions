@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using BAMCIS.AWSS3Extensions.Model;
+using BAMCIS.ChunkExtensionMethod;
 using BAMCIS.ExponentialBackoffAndRetry;
 using System;
 using System.Collections.Generic;
@@ -186,15 +187,15 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="preferMultipart">If set to true, the method will use a multipart copy as long as the part size is less than the object size for any object, even
         /// those under 5 GiB.</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchCopyAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, long partSize, bool preferMultipart = false)
+        public static async Task<BulkCopyResponse> BulkCopyAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, long partSize, bool preferMultipart = false)
         {
-            BatchCopyRequest request = new BatchCopyRequest(requests)
+            BulkCopyRequest request = new BulkCopyRequest(requests)
             {
                 PartSize = partSize,
                 PreferMultipart = preferMultipart
             };
 
-            return await BatchCopyAsync(client, request);
+            return await BulkCopyAsync(client, request);
         }
 
         /// <summary>
@@ -204,9 +205,9 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="client">The S3 client to use</param>
         /// <param name="requests">The copy requests to process</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchCopyAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests)
+        public static async Task<BulkCopyResponse> BulkCopyAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests)
         {
-            return await BatchCopyAsync(client, requests, Constants.FIVE_MEBIBYTE);
+            return await BulkCopyAsync(client, requests, Constants.FIVE_MEBIBYTE);
         }
 
         /// <summary>
@@ -218,9 +219,9 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="preferMultipart">If set to true, the method will use a multipart copy as long as the part size is less than the object size for any object, even
         /// those under 5 GiB.</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchCopyAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, bool preferMultipart)
+        public static async Task<BulkCopyResponse> BulkCopyAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, bool preferMultipart)
         {
-            return await BatchCopyAsync(client, requests, Constants.FIVE_MEBIBYTE, preferMultipart);
+            return await BulkCopyAsync(client, requests, Constants.FIVE_MEBIBYTE, preferMultipart);
         }
 
         /// <summary>
@@ -228,35 +229,35 @@ namespace BAMCIS.AWSS3Extensions
         /// 5 MiB part size for multi-part uploads.
         /// </summary>
         /// <param name="client">The S3 client to use</param>
-        /// <param name="request">The Batch copy request to process</param>
+        /// <param name="request">The Bulk copy request to process</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchCopyAsync(this IAmazonS3 client, BatchCopyRequest request)
+        public static async Task<BulkCopyResponse> BulkCopyAsync(this IAmazonS3 client, BulkCopyRequest request)
         {
-            return (await CoreBatchCopyAsync(client, request, false));
+            return (await CoreBulkCopyAsync(client, request, false));
         }
 
         /// <summary>
         /// Initiates a parallel copy operation for all of the included requests. The source objects
-        /// are either deleted in a batch-type operation or individually as each copy completes.
+        /// are either deleted in a Bulk-type operation or individually as each copy completes.
         /// </summary>
         /// <param name="client">The S3 client to use</param>
         /// <param name="requests">The copy requests to process</param>
         /// <param name="partSize">The size of the part to use for a multipart copy.</param>
         /// <param name="preferMultipart">If set to true, the method will use a multipart copy as long as the part size is less than the object size for any object, even
         /// those under 5 GiB.</param>
-        /// <param name="useBatchDelete">If set to true, the objects will be deleted using request batches of 1000 keys per
+        /// <param name="useBulkDelete">If set to true, the objects will be deleted using request Bulkes of 1000 keys per
         /// request. If set to false, each object will be deleted individually after it is copied</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchMoveAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, long partSize, bool useBatchDelete = true, bool preferMultipart = false)
+        public static async Task<BulkCopyResponse> BulkMoveAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, long partSize, bool useBulkDelete = true, bool preferMultipart = false)
         {
-            BatchMoveRequest request = new BatchMoveRequest(requests)
+            BulkMoveRequest request = new BulkMoveRequest(requests)
             {
                 PartSize = partSize,
-                BatchDelete = useBatchDelete,
+                BulkDelete = useBulkDelete,
                 PreferMultipart = preferMultipart
             };
 
-            return await BatchMoveAsync(client, request);
+            return await BulkMoveAsync(client, request);
         }
 
         /// <summary>
@@ -265,38 +266,38 @@ namespace BAMCIS.AWSS3Extensions
         /// </summary>
         /// <param name="client">The S3 client to use</param>
         /// <param name="requests">The copy requests to process</param>
-        /// <param name="useBatchDelete">If set to true, the objects will be deleted using request batches of 1000 keys per
+        /// <param name="useBulkDelete">If set to true, the objects will be deleted using request Bulkes of 1000 keys per
         /// request. If set to false, each object will be deleted individually after it is copied</param>
         /// <param name="preferMultipart">If set to true, the method will use a multipart copy as long as the part size is less than the object size for any object, even
         /// those under 5 GiB.</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchMoveAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, bool useBatchDelete, bool preferMultipart = false)
+        public static async Task<BulkCopyResponse> BulkMoveAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests, bool useBulkDelete, bool preferMultipart = false)
         {
-            return await BatchMoveAsync(client, requests, Constants.FIVE_MEBIBYTE, useBatchDelete, preferMultipart);
+            return await BulkMoveAsync(client, requests, Constants.FIVE_MEBIBYTE, useBulkDelete, preferMultipart);
         }
 
         /// <summary>
         /// Initiates a parallel copy operation for all of the included requests. Uses a
-        /// 5 MiB part size for multi-part uploads. Using batch delete is true and prefering
+        /// 5 MiB part size for multi-part uploads. Using Bulk delete is true and prefering
         /// multi-part is set to false.
         /// </summary>
         /// <param name="client">The S3 client to use</param>
         /// <param name="requests">The copy requests to process</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchMoveAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests)
+        public static async Task<BulkCopyResponse> BulkMoveAsync(this IAmazonS3 client, IEnumerable<CopyObjectRequest> requests)
         {
-            return await BatchMoveAsync(client, requests, Constants.FIVE_MEBIBYTE);
+            return await BulkMoveAsync(client, requests, Constants.FIVE_MEBIBYTE);
         }
 
         /// <summary>
         /// Initiates a parallel copy operation for all of the included requests.
         /// </summary>
         /// <param name="client">The Amazon S3 Client to use</param>
-        /// <param name="request">The batch move request to process</param>
+        /// <param name="request">The Bulk move request to process</param>
         /// <returns>The copy object responses.</returns>
-        public static async Task<BatchCopyResponse> BatchMoveAsync(this IAmazonS3 client, BatchMoveRequest request)
+        public static async Task<BulkCopyResponse> BulkMoveAsync(this IAmazonS3 client, BulkMoveRequest request)
         {
-            return await MoveBatchAsnyc(client, request);
+            return await MoveBulkAsnyc(client, request);
         }
 
         /// <summary>
@@ -394,48 +395,6 @@ namespace BAMCIS.AWSS3Extensions
         private static bool UseMultipart(long objectSizeInBytes, long chunkSizeInBytes)
         {
             return objectSizeInBytes >= Constants.MINIMUM_MULTIPART_SIZE && chunkSizeInBytes < objectSizeInBytes;
-        }
-
-        /// <summary>
-        /// Chunks an IEnumerable into multiple lists of a specified size
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="input"></param>
-        /// <param name="chunkSize"></param>
-        /// <returns></returns>
-        private static IEnumerable<List<T>> ChunkList<T>(this IEnumerable<T> input, int chunkSize)
-        {
-            if (chunkSize <= 0)
-            {
-                throw new ArgumentOutOfRangeException("chunkSize", "The chunk size must be greater than 0.");
-            }
-
-            if (input == null)
-            {
-                throw new ArgumentNullException("input");
-            }
-
-            if (input.Any())
-            {
-                IEnumerator<T> Enumerator = input.GetEnumerator();
-                List<T> ReturnList = new List<T>(chunkSize);
-                int Counter = 1;
-
-                while (Enumerator.MoveNext())
-                {
-                    if (Counter >= chunkSize)
-                    {
-                        yield return ReturnList;
-                        ReturnList = new List<T>();
-                        Counter = 1;
-                    }
-
-                    ReturnList.Add(Enumerator.Current);
-                    Counter++;
-                }
-
-                yield return ReturnList;
-            }
         }
 
         /// <summary>
@@ -680,21 +639,21 @@ namespace BAMCIS.AWSS3Extensions
         }
 
         /// <summary>
-        /// A simple wrapper to identify whether deletes will be batched or not, all
+        /// A simple wrapper to identify whether deletes will be Bulked or not, all
         /// public methods should call this
         /// </summary>
         /// <param name="client"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        private static async Task<BatchCopyResponse> MoveBatchAsnyc(this IAmazonS3 client, BatchMoveRequest request)
+        private static async Task<BulkCopyResponse> MoveBulkAsnyc(this IAmazonS3 client, BulkMoveRequest request)
         {
-            if (request.BatchDelete)
+            if (request.BulkDelete)
             {
-                return await MoveWithBatchDeleteAsync(client, request);
+                return await MoveWithBulkDeleteAsync(client, request);
             }
             else
             {
-                return await CoreBatchCopyAsync(client, request, true);
+                return await CoreBulkCopyAsync(client, request, true);
             }
         }
 
@@ -705,12 +664,12 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="client"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        private static async Task<BatchCopyResponse> MoveWithBatchDeleteAsync(this IAmazonS3 client, BatchMoveRequest request)
+        private static async Task<BulkCopyResponse> MoveWithBulkDeleteAsync(this IAmazonS3 client, BulkMoveRequest request)
         {
             List<FailedCopyRequest> failures = new List<FailedCopyRequest>();
 
             // This method checks for same source/destination problems and will throw an exception
-            BatchCopyResponse responses = await client.CoreBatchCopyAsync(request, false);
+            BulkCopyResponse responses = await client.CoreBulkCopyAsync(request, false);
 
             // Max keys in a request is 1000
             // Make sure that we don't delete objects that
@@ -718,9 +677,9 @@ namespace BAMCIS.AWSS3Extensions
             // happen because of the same logic in the copy operation
             // but make sure
             foreach (IEnumerable<KeyValuePair<CopyObjectRequest, CopyObjectResponse>> responseSet in
-                responses.SuccessfulResponses.Where(x => !(x.Key.SourceKey == x.Key.DestinationKey &&
+                responses.SuccessfulOperations.Where(x => !(x.Key.SourceKey == x.Key.DestinationKey &&
                 x.Key.SourceBucket != null &&
-                x.Key.SourceBucket.Equals(x.Key.DestinationBucket, StringComparison.OrdinalIgnoreCase))).ChunkList(1000))
+                x.Key.SourceBucket.Equals(x.Key.DestinationBucket, StringComparison.OrdinalIgnoreCase))).Chunk(1000))
             {
                 DeleteObjectsRequest delete = new DeleteObjectsRequest()
                 {
@@ -746,7 +705,7 @@ namespace BAMCIS.AWSS3Extensions
                     // list and indicate they failed during delete
                     foreach (FailedCopyRequest failure in deleteFailures)
                     {
-                        responses.SuccessfulResponses.Remove(failure.Request);
+                        responses.SuccessfulOperations.Remove(failure.Request);
                     }
 
                     foreach (FailedCopyRequest fail in deleteFailures)
@@ -760,7 +719,7 @@ namespace BAMCIS.AWSS3Extensions
                     // group and make them failures when an exception occurs
                     foreach (KeyValuePair<CopyObjectRequest, CopyObjectResponse> item in responseSet)
                     {
-                        responses.SuccessfulResponses.Remove(item.Key);
+                        responses.SuccessfulOperations.Remove(item.Key);
                         responses.FailedRequests.Add(new FailedCopyRequest(item.Key, e, FailureMode.DELETE));
                     }
                 }
@@ -776,7 +735,7 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="client"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        private static async Task<BatchCopyResponse> CoreBatchCopyAsync(this IAmazonS3 client, BatchCopyRequest request, bool deleteSource)
+        private static async Task<BulkCopyResponse> CoreBulkCopyAsync(this IAmazonS3 client, BulkCopyRequest request, bool deleteSource)
         {
             ParameterTests.NonNull(request, "request");
             ParameterTests.OutOfRange(request.PartSize >= Constants.MINIMUM_MULTIPART_PART_SIZE, "partSize", $"The part size must be at least {Constants.MINIMUM_MULTIPART_PART_SIZE} bytes.");
@@ -788,7 +747,7 @@ namespace BAMCIS.AWSS3Extensions
 
             if (errors.Any())
             {
-                throw new SourceDestinationSameException($"The batch copy/move operation contained requests that had the same source and destination and could cause the accidential loss of data.", errors);
+                throw new SourceDestinationSameException($"The Bulk copy/move operation contained requests that had the same source and destination and could cause the accidential loss of data.", errors);
             }
 
             List<CopyObjectRequestResponse> responses = new List<CopyObjectRequestResponse>();
@@ -802,7 +761,7 @@ namespace BAMCIS.AWSS3Extensions
             int counter = 0;
 
             //IEnumerable<>
-            foreach (List<CopyObjectRequest> chunk in filtered.ChunkList(100))
+            foreach (List<CopyObjectRequest> chunk in filtered.Chunk(request.MaxConcurrency))
             {
                 Debug.WriteLine($"Processing request chunk {++counter}.");
 
@@ -842,7 +801,7 @@ namespace BAMCIS.AWSS3Extensions
             {
                 var dict = responses.ToDictionary(x => x.Request, x => x.Response);
 
-                return new BatchCopyResponse(dict, failures);
+                return new BulkCopyResponse(dict, failures);
             }
             catch (Exception e)
             {
