@@ -185,7 +185,7 @@ namespace BAMCIS.AWSS3Extensions.Tests
             }
             finally
             {
-                await client.EmptyBucket(bucket);
+                await client.EmptyBucketAsync(bucket);
 
                 await client.DeleteBucketAsync(bucket);
             }
@@ -193,7 +193,7 @@ namespace BAMCIS.AWSS3Extensions.Tests
 
         private async Task CreateAndFillBucket(int numberOfObjects)
         {
-            bool exists = await client.BucketExists(sourceBucket);
+            bool exists = await client.BucketExistsAsync(sourceBucket);
 
             List<PutObjectResponse> fails = new List<PutObjectResponse>();
 

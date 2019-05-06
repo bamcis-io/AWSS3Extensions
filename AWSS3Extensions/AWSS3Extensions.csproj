@@ -15,11 +15,14 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/bamcis-io/AWSS3Extensions/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>AWS S3</PackageTags>
-    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added "async" to appropriate method names.</PackageReleaseNotes>
     <Copyright>bamcis.io</Copyright>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>AWSS3Extensions.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

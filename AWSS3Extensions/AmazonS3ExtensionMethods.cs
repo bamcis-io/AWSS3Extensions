@@ -37,7 +37,7 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="includeAllVersions">If true, in a bucket with versioning turned on, this will delete all versions of
         /// the objects in the bukcet, not just add a delete marker as the most recent version.</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<DeleteError>> EmptyBucket(this IAmazonS3 client, string bucketName, bool includeAllVersions = false)
+        public static async Task<IEnumerable<DeleteError>> EmptyBucketAsync(this IAmazonS3 client, string bucketName, bool includeAllVersions = false)
         {
             ParameterTests.NotNullOrEmpty(bucketName, "bucketName");
 
@@ -102,7 +102,7 @@ namespace BAMCIS.AWSS3Extensions
         /// <param name="client"></param>
         /// <param name="bucketName">The bucket to test for existence</param>
         /// <returns></returns>
-        public static async Task<bool> BucketExists(this IAmazonS3 client, string bucketName)
+        public static async Task<bool> BucketExistsAsync(this IAmazonS3 client, string bucketName)
         {
             ParameterTests.NotNullOrEmpty(bucketName, "bucketName");
 
